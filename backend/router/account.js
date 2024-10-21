@@ -6,12 +6,12 @@ const mongoose = require('mongoose')
 const router = express.Router();
 
 router.get('/balance',authmiddleware,async function(req,res){
-    console.log(req.user);
+    // console.log(req.user);
     try{
         const account = await Account.findOne({
         userId:req.user
     });
-    console.log(account);
+    // console.log(account);
     res.json({
             balance:account.balance
         })
@@ -25,21 +25,20 @@ router.get('/balance',authmiddleware,async function(req,res){
 
 router.post('/transfer', authmiddleware, async function(req, res) {
 
-
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
         const { amount, to } = req.body;
-        console.log("Transfer details:", { amount, to });
+        // console.log("Transfer details:", { amount, to });
 
         const transferAmount = Number(amount);
         if (isNaN(transferAmount) || transferAmount <= 0) {
             throw new Error("Invalid transfer amount");
         }
 
-        console.log("Finding source account");
+        // console.log("Finding source account");
         const account = await Account.findOne({ userId: req.userId }).session(session);
-        console.log("Source account:", account);
+        // console.log("Source account:", account);
 
         if (!account || account.balance < amount) {
             await session.abortTransaction();
@@ -49,7 +48,10 @@ router.post('/transfer', authmiddleware, async function(req, res) {
         }
 
         const toAccount = await Account.findOne({ userId: to }).session(session);
-        console.log(toAccount);
+        // console.log(toAccount);
+
+
+
 
         if (!toAccount) {
             await session.abortTransaction();
@@ -82,7 +84,7 @@ router.post('/transfer', authmiddleware, async function(req, res) {
         });
     } finally {
         session.endSession();
-        console.log("Transfer route completed");
+        // console.log("Transfer route completed");
     }
 });
 

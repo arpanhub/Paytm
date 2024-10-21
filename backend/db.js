@@ -1,13 +1,12 @@
-
+require('dotenv').config();
 const mongoose = require('mongoose');
+const dbURI = process.env.MONGODB_URI;
 
-// MongoDB Atlas connection string
-const dbURI = 'mongodb+srv://arpangupta:arpanmongodb@cluster0.azri6.mongodb.net/test?retryWrites=true&w=majority';
 
 mongoose.connect(dbURI, {
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,  // Adjust this if needed
-    tls: true  // Ensures a secure connection
+    serverSelectionTimeoutMS: 5000,  
+    tls: true  
 })
 .then(() => {
     console.log('Connected to MongoDB Atlas');
@@ -15,7 +14,6 @@ mongoose.connect(dbURI, {
 .catch((err) => {
     console.error('MongoDB connection error:', err);
 });
-
 
 const userSchema = mongoose.Schema({
   username: {

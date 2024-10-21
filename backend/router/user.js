@@ -1,12 +1,13 @@
+require('dotenv').config(); 
 const express = require('express');
 const router = express.Router();
 const zod = require('zod');
 const jwt = require("jsonwebtoken");
-const {JWT_SECRET} = require('../config');  
+const JWT_SECRET = process.env.JWT_SECRET;
 const {User,Account} = require('../db');
 const authmiddleware = require('../middleware');
 
-console.log(authmiddleware); 
+// console.log(authmiddleware); 
 const signupSchema = zod.object({
     username:zod.string(),
     password:zod.string(),
@@ -28,7 +29,7 @@ router.post('/signup',async function(req,res){
     const existing =await User.findOne({
         username:req.body.username
     })
-    console.log(existing);//
+    // console.log(existing);
     if(existing && existing._id){
         return res.status(409).json({
             message:"username already taken"
@@ -40,7 +41,9 @@ router.post('/signup',async function(req,res){
         firstname: req.body.firstname,
         lastname: req.body.lastname,
     })
-    console.log(user);
+    // console.log(user);
+
+
 
     const userId = user._id;
     
@@ -111,7 +114,7 @@ const updateSchema = zod.object({
 })
 
 router.put('/update', authmiddleware, async function (req, res) {
-    console.log("in update");
+    // console.log("in update");
     try {
         const { success, error } = updateSchema.safeParse(req.body);
         if (!success) {
@@ -120,9 +123,9 @@ router.put('/update', authmiddleware, async function (req, res) {
                 errors: error.errors
             });
         }
-        console.log(success);//
-        console.log(req.body);//
-        console.log(req.user);
+        // console.log(success);
+        // console.log(req.body);
+        // console.log(req.user);
         const updateResult = await User.updateOne(
             { _id: req.user },
             { $set: req.body }
@@ -131,7 +134,7 @@ router.put('/update', authmiddleware, async function (req, res) {
             _id: req.user
         });
 
-        console.log("updateddata",updateddata);
+        // console.log("updateddata",updateddata);
         
         if (updateResult.modifiedCount ==
              0) {
@@ -142,7 +145,7 @@ router.put('/update', authmiddleware, async function (req, res) {
             result: updateddata
         });
     } catch (err) {
-        console.error(err);
+        // console.error(err);
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });
@@ -171,20 +174,25 @@ router.get('/bulk',async function (req,res) {
             message:"No users found"
         });
     }
-    console.log(users);
+    // console.log(users);
     res.json(users)
 })
 
 
 router.get('/userprofile',authmiddleware,async function(req,res) {
-    const user = await User.findOne({_id:req.userId})
-    const accountdetails = await Account.findOne({userId:req.userId})
-    res.json(
-        {
-            firstname:user.firstname,
-            balance:accountdetails.balance
-        }
-    )
+    try{
+        const user = await User.findOne({_id:req.userId});
+        const accountdetails = await Account.findOne({userId:req.userId});
+        res.json(
+            {
+                firstname:user.firstname,
+                balance:accountdetails.balance
+            }
+        )
+    }catch(err){
+        // console.log(err);
+
+    }
 })
 
 module.exports = router;

@@ -7,10 +7,12 @@
   import { Signup } from "./Pages/Signup";
   import { Signin } from "./Pages/Signin";
   import { Dashboard } from "./Pages/DashBoard"
-  import { SendMoney } from "./pages/SendMoney";
+  import { SendMoney } from "./Pages/SendMoney";
 
   function App() {
     const isAuthenticated = !!localStorage.getItem("token");
+    console.log(isAuthenticated);
+    
     return (
       <>
         <BrowserRouter>
@@ -28,4 +30,4 @@
     )
   }
 
-  export default App
+  export default App;

@@ -35,7 +35,7 @@ export const Dashboard = () => {
             setUser(response.data.firstname);
             setbalance(response.data.balance);
         }catch(err){
-            console.error("Error fetching user data", error);
+            console.error("Error fetching user data", err);
         }
     }
         fetchuser(token);

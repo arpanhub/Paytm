@@ -58,11 +58,10 @@ export const SendMoney = () => {
                         }catch(err){
                             if(err.response && err.response.status===400){
                                 setstatus(err.response.data.message)
+                            }else{
+                                setstatus("Something went wrong!");
                             }
-                            console.log(err.response.data.message);
                         }
-                        
-                        setstatus(response.data.message);
                         console.log(status);
                         
                     }} className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">
