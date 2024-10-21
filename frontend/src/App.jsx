@@ -4,8 +4,8 @@
     Routes,
     Navigate
   } from "react-router-dom";
-  import { Signup } from "./pages/Signup";
-  import { Signin } from "./pages/Signin";
+  import { Signup } from "./Pages/Signup";
+  import { Signin } from "./Pages/Signin";
   import { Dashboard } from "./Pages/DashBoard"
   import { SendMoney } from "./pages/SendMoney";
 
