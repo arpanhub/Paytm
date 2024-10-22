@@ -1,7 +1,7 @@
-import { Navbar } from "../components/Navbar";
-import { Balance } from "../components/Balance";
+import { Navbar } from "../Components/Navbar";
+import { Balance } from "../Components/Balance";
 import { useEffect, useState } from "react"
-import {Users} from '../components/Users'
+import {Users} from '../Components/Users'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
